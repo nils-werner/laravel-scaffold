@@ -4,7 +4,7 @@ scaffold
 Scaffolding for Laravel 4 
 [![Build Status](https://travis-ci.org/nils-werner/laravel-scaffold.png?branch=master)](https://travis-ci.org/nils-werner/laravel-scaffold)
 
-** Be warned: This is a work in progress. Nothing actually works yet!**
+**Be warned: This is a work in progress. Nothing actually works yet!**
 
 ## Installation
 
