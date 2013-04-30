@@ -7,7 +7,7 @@ Scaffolding for Laravel 4
 
 ## Installation
 
-Add nils-werner\scaffold as a requirement to composer.json:
+Add `nils-werner/scaffold` as a requirement to composer.json:
 
 ```json
 {
@@ -17,7 +17,7 @@ Add nils-werner\scaffold as a requirement to composer.json:
     "repositories": [
         {
         "type":"vcs",
-        "url":"https://github.com/nils-werner/scaffold"
+        "url":"https://github.com/nils-werner/laravel-scaffold"
         }
     ]
 }
