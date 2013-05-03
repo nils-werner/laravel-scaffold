@@ -25,8 +25,10 @@ class ScaffoldController extends Controller {
 	{
 		$model = $this->resolveModel($handle);
 		$entries = $model->all();
+		$columns = $this->getColumns($model);
+		$inputs = $this->generateInputs($columns);
 
-		return View::make('scaffold::index', compact('entries', 'handle'));
+		return View::make('scaffold::index', compact('entries', 'handle', 'inputs'));
 	}
 
 	public function getCreate($handle)								# CREATE
@@ -84,7 +86,7 @@ class ScaffoldController extends Controller {
 		if ($validation->passes())
 		{
 			$entry = $model->find($id);
-			$user->update($input);
+			$entry->update($input);
 
 			return Redirect::route('scaffold.edit', [$handle, $id]);
 		}
