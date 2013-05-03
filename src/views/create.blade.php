@@ -15,6 +15,7 @@
 
 		<li>
 			{{ Form::submit('Submit', ['class' => 'btn']) }}
+			{{ link_to_route('scaffold.index', 'Cancel', [$handle], ['class' => 'pull-right']) }}</p>
 		</li>
 	</ul>
 {{ Form::close() }}
