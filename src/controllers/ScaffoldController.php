@@ -1,7 +1,10 @@
 <?php namespace NilsWerner\Scaffold;
 
-use Illuminate\Routing\Controllers\Controller;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Routing\Controllers\Controller;
 
 class ScaffoldController extends Controller {
 
@@ -16,36 +19,35 @@ class ScaffoldController extends Controller {
 |
 */
 
-	public function getIndex($model)								# INDEX
+	public function getIndex($handle)								# INDEX
 	{
-		$model = $this->resolveModel($model);
+		$model = $this->resolveModel($handle);
 		$entries = $model->all();
 
-		return View::make('scaffold::index', compact('entries'));
+		return View::make('scaffold::index', compact('entries', 'handle'));
 	}
 
-	public function getCreate($model)								# CREATE
+	public function getCreate($handle)								# CREATE
 	{	
-		$model = $this->resolveModel($model);
+		$model = $this->resolveModel($handle);
 
-		return View::make('scaffold::create');
+		return View::make('scaffold::create', compact('handle'));
 	}
 
-	public function postIndex($model)								# STORE
+	public function postIndex($handle)								# STORE
 	{
-		$model = $this->resolveModel($model);
+		$model = $this->resolveModel($handle);
 
 		$input = Input::all();
-		$validation = Validator::make($input, $model::$rules);
+		$validation = Validator::make($input, isset($model::$rules) ? $model::$rules : []);
 
 		if ($validation->passes())
 		{
 			$model->create($input);
-
-			return Redirect::route('scaffold.index');
+			return Redirect::route('scaffold.index', [$handle]);
 		}
 
-		return Redirect::route('scaffold.create')
+		return Redirect::route('scaffold.create', [$handle])
 			->withInput()
 			->withErrors($validation)
 			->with('flash', 'There were validation errors.');
@@ -53,13 +55,13 @@ class ScaffoldController extends Controller {
 
 	public function getEdit($model, $id)							# EDIT
 	{
-		$model = $this->resolveModel($model);
+		$model = $this->resolveModel($handle);
 
 		$entry = $model->find($id);
 
 		if (is_null($entry))
 		{
-			return Redirect::route('scaffold.index');
+			return Redirect::route('scaffold.index', [$handle]);
 		}
 
 		return View::make('scaffold::edit', compact('entry'));
@@ -67,7 +69,7 @@ class ScaffoldController extends Controller {
 
 	public function postEdit($model, $id)							# UPDATE
 	{
-		$model = $this->resolveModel($model);
+		$model = $this->resolveModel($handle);
 
 		$input = array_except(Input::all(), '_method');
 		$validation = Validator::make($input, $model::$rules);
@@ -77,22 +79,22 @@ class ScaffoldController extends Controller {
 			$entry = $model->find($id);
 			$user->update($input);
 
-			return Redirect::route('scaffold.edit', $id);
+			return Redirect::route('scaffold.edit', [$handle, $id]);
 		}
 
-		return Redirect::route('scaffold.edit', $id)
+		return Redirect::route('scaffold.edit', [$handle, $id])
 			->withInput()
 			->withErrors($validation)
 			->with('flash', 'There were validation errors.');
 	}
 
-	public function postDelete($model, $id)							# DELETE
+	public function postDelete($handle, $id)							# DELETE
 	{
-		$model = $this->resolveModel($model);
+		$model = $this->resolveModel($handle);
 
 		$model->find($id)->delete();
 
-		return Redirect::route('scaffold.index');
+		return Redirect::route('scaffold.index', [$handle]);
 	}
 
 
@@ -102,9 +104,9 @@ class ScaffoldController extends Controller {
 |
 */
 
-	protected function resolveModel($model)
+	protected function resolveModel($handle)
 	{
-		$model = ucfirst($model);
+		$model = ucfirst($handle);
 		if(is_subclass_of($model, 'Eloquent'))
 		{
 			return new $model();
@@ -115,7 +117,7 @@ class ScaffoldController extends Controller {
 		}
 	}
 
-	protected function getColumns($model)
+	protected function getColumns($handle)
 	{
 		return DB::getDoctrineSchemaManager()->listTableDetails($model->getTable())->getColumns();
 	}
