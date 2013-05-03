@@ -24,7 +24,7 @@
 					<td>{{ link_to_route('scaffold.edit', 'Edit', [$handle, $entry->id], ['class' => 'btn btn-info']) }}</td>
 					<td>
 						{{ Form::open(['route' => ['scaffold.delete', $handle, $entry->id]]) }}
-							{{ Form::submit('Delete', array('class' => 'btn btn-danger')) }}</td>
+							{{ Form::submit('Delete', array('class' => 'btn btn-danger')) }}
 						{{ Form::close() }}
 					</td>
 				</tr>
