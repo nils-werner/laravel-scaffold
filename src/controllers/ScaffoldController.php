@@ -46,7 +46,7 @@ class ScaffoldController extends Controller {
 		$model = $this->resolveModel($handle);
 
 		$input = Input::all();
-		$validation = Validator::make($input, isset($model::$rules) ? $model::$rules : []);
+		$validation = Validator::make($input, isset($model->rules) ? $model->rules : []);
 
 		if ($validation->passes())
 		{
@@ -82,7 +82,7 @@ class ScaffoldController extends Controller {
 		$model = $this->resolveModel($handle);
 
 		$input = array_except(Input::all(), '_method');
-		$validation = Validator::make($input, isset($model::$rules) ? $model::$rules : []);
+		$validation = Validator::make($input, isset($model->rules) ? $model->rules : []);
 
 		if ($validation->passes())
 		{
