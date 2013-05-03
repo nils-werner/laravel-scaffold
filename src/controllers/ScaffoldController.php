@@ -137,7 +137,7 @@ class ScaffoldController extends Controller {
 			if(!in_array($column->getName(), ['id', 'created_at', 'updated_at']))
 			{
 				//if(is_a($column->getType(), "Doctrine\DBAL\Types\IntegerType"))
-				$inputs[] = [Form::label($column->getName(), ucfirst($column->getName())), Form::text($column->getName())];
+				$inputs[] = $column->getName();
 			}
 		}
 		return $inputs;
