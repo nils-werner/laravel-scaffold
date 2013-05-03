@@ -51,7 +51,8 @@ class ScaffoldController extends Controller {
 		if ($validation->passes())
 		{
 			$model->create($input);
-			return Redirect::route('scaffold.index', [$handle]);
+			return Redirect::route('scaffold.index', [$handle])
+				->with('flash', 'Entry saved.');
 		}
 
 		return Redirect::route('scaffold.create', [$handle])
@@ -88,7 +89,8 @@ class ScaffoldController extends Controller {
 			$entry = $model->find($id);
 			$entry->update($input);
 
-			return Redirect::route('scaffold.edit', [$handle, $id]);
+			return Redirect::route('scaffold.index', [$handle])
+				->with('flash', 'Entry updated.');
 		}
 
 		return Redirect::route('scaffold.edit', [$handle, $id])
@@ -103,7 +105,8 @@ class ScaffoldController extends Controller {
 
 		$model->find($id)->delete();
 
-		return Redirect::route('scaffold.index', [$handle]);
+		return Redirect::route('scaffold.index', [$handle])
+			->with('flash', 'Entry deleted.');
 	}
 
 
