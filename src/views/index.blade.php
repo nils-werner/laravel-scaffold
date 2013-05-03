@@ -4,7 +4,7 @@
 
 <h1>All Entries</h1>
 
-<p>{{ link_to_route('scaffold.create', 'Add new user', [$handle]) }}</p>
+<p>{{ link_to_route('scaffold.create', 'Add new entry', [$handle]) }}</p>
 
 @if ($entries->count())
 	<table class="table table-striped table-bordered">
