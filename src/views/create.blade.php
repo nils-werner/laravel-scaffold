@@ -4,25 +4,25 @@
 
 <h1>Create Entry</h1>
 
-{{ Form::open(['route' => ['scaffold.store', $handle]]) }}
-    <ul>
-        @foreach ($inputs as $input)
-            <li>
-                {{ $input[0] }}
-                {{ $input[1] }}
-            </li>
-        @endforeach
+{{ Form::model($entry, ['route' => ['scaffold.store', $handle]]) }}
+	<ul>
+		@foreach ($inputs as $input)
+			<li>
+				{{ $input[0] }}
+				{{ $input[1] }}
+			</li>
+		@endforeach
 
-        <li>
-            {{ Form::submit('Submit', ['class' => 'btn']) }}
-        </li>
-    </ul>
+		<li>
+			{{ Form::submit('Submit', ['class' => 'btn']) }}
+		</li>
+	</ul>
 {{ Form::close() }}
 
 @if ($errors->any())
-    <ul>
-        {{ implode('', $errors->all('<li class="error">:message</li>')) }}
-    </ul>
+	<ul>
+		{{ implode('', $errors->all('<li class="error">:message</li>')) }}
+	</ul>
 @endif
 
 @stop

@@ -4,17 +4,18 @@
 
 <h1>Edit Entry</h1>
 
-<h1>Edit User</h1>
-{{ Form::open(['route' => ['scaffold.update', $handle, $entry->id]]) }}
+{{ Form::model($entry, ['route' => ['scaffold.update', $handle, $entry->id]]) }}
 	<ul>
-		<li>
-			{{ Form::label('realname', 'Name:') }}
-			{{ Form::text('realname') }}
-		</li>
+		@foreach ($inputs as $input)
+			<li>
+				{{ $input[0] }}
+				{{ $input[1] }}
+			</li>
+		@endforeach
 
 		<li>
 			{{ Form::submit('Update', ['class' => 'btn btn-info']) }}
-			{{ HTML::link_to_route('scaffold.index', ['class' => 'btn']) }}
+			{{ link_to_route('scaffold.index', 'Cancel', [$handle], ['class' => 'btn']) }}</p>
 		</li>
 	</ul>
 {{ Form::close() }}

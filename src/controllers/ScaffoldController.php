@@ -34,8 +34,9 @@ class ScaffoldController extends Controller {
 		$model = $this->resolveModel($handle);
 		$columns = $this->getColumns($model);
 		$inputs = $this->generateInputs($columns);
+		$entry = new $model();
 
-		return View::make('scaffold::create', compact('handle', 'inputs'));
+		return View::make('scaffold::create', compact('entry', 'handle', 'inputs'));
 	}
 
 	public function postIndex($handle)								# STORE
