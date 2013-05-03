@@ -57,24 +57,23 @@ class ScaffoldController extends Controller {
 			->with('flash', 'There were validation errors.');
 	}
 
-	public function getEdit($model, $id)							# EDIT
+	public function getEdit($handle, $id)							# EDIT
 	{
 		$model = $this->resolveModel($handle);
 
 		$entry = $model->find($id);
 		$columns = $this->getColumns($model);
-
-		$this->generateInputs($columns);
+		$inputs = $this->generateInputs($columns);
 
 		if (is_null($entry))
 		{
 			return Redirect::route('scaffold.index', [$handle]);
 		}
 
-		return View::make('scaffold::edit', compact('entry'));
+		return View::make('scaffold::edit', compact('entry', 'inputs', 'handle'));
 	}
 
-	public function postEdit($model, $id)							# UPDATE
+	public function postEdit($handle, $id)							# UPDATE
 	{
 		$model = $this->resolveModel($handle);
 
