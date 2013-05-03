@@ -1,5 +1,7 @@
 <?php namespace NilsWerner\Scaffold;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Form;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -30,8 +32,10 @@ class ScaffoldController extends Controller {
 	public function getCreate($handle)								# CREATE
 	{	
 		$model = $this->resolveModel($handle);
+		$columns = $this->getColumns($model);
+		$inputs = $this->generateInputs($columns);
 
-		return View::make('scaffold::create', compact('handle'));
+		return View::make('scaffold::create', compact('handle', 'inputs'));
 	}
 
 	public function postIndex($handle)								# STORE
@@ -58,6 +62,9 @@ class ScaffoldController extends Controller {
 		$model = $this->resolveModel($handle);
 
 		$entry = $model->find($id);
+		$columns = $this->getColumns($model);
+
+		$this->generateInputs($columns);
 
 		if (is_null($entry))
 		{
@@ -117,9 +124,23 @@ class ScaffoldController extends Controller {
 		}
 	}
 
-	protected function getColumns($handle)
+	protected function getColumns($model)
 	{
 		return DB::getDoctrineSchemaManager()->listTableDetails($model->getTable())->getColumns();
+	}
+
+	protected function generateInputs($columns)
+	{
+		$inputs = [];
+		foreach($columns AS $column)
+		{
+			if(!in_array($column->getName(), ['id', 'created_at', 'updated_at']))
+			{
+				//if(is_a($column->getType(), "Doctrine\DBAL\Types\IntegerType"))
+				$inputs[] = [Form::label($column->getName(), ucfirst($column->getName())), Form::text($column->getName())];
+			}
+		}
+		return $inputs;
 	}
 
 }

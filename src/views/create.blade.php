@@ -6,10 +6,12 @@
 
 {{ Form::open(['route' => ['scaffold.store', $handle]]) }}
     <ul>
-        <li>
-            {{ Form::label('realname', 'Name:') }}
-            {{ Form::text('realname') }}
-        </li>
+        @foreach ($inputs as $input)
+            <li>
+                {{ $input[0] }}
+                {{ $input[1] }}
+            </li>
+        @endforeach
 
         <li>
             {{ Form::submit('Submit', ['class' => 'btn']) }}
