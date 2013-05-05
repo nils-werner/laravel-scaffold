@@ -50,7 +50,13 @@ class ScaffoldController extends Controller {
 
 		if ($validation->passes())
 		{
-			$model->create($input);
+			$entry = new $model();
+			foreach($input AS $name => $data)
+			{
+				$entry->$name = $data;
+			}
+			$entry->save();
+
 			return Redirect::route('scaffold.index', [$handle])
 				->with('flash', 'Entry saved.');
 		}
@@ -87,7 +93,11 @@ class ScaffoldController extends Controller {
 		if ($validation->passes())
 		{
 			$entry = $model->find($id);
-			$entry->update($input);
+			foreach($input AS $name => $data)
+			{
+				$entry->$name = $data;
+			}
+			$entry->Save();
 
 			return Redirect::route('scaffold.index', [$handle])
 				->with('flash', 'Entry updated.');
