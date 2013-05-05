@@ -24,7 +24,7 @@ class ScaffoldController extends Controller {
 	public function getIndex($handle)								# INDEX
 	{
 		$model = $this->resolveModel($handle);
-		$entries = $model->all();
+		$entries = $model->paginate(15);
 		$columns = $this->getColumns($model);
 		$inputs = $this->generateInputs($columns);
 

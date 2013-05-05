@@ -35,4 +35,6 @@
 	There are no entries
 @endif
 
+{{ $entries->links() }}
+
 @stop
