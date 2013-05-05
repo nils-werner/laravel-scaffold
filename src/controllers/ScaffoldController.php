@@ -34,7 +34,7 @@ class ScaffoldController extends Controller {
 	public function getCreate($handle)								# CREATE
 	{	
 		$model = $this->resolveModel($handle);
-		$columns = $this->getColumns($model);
+		$columns = $this->getFields($model);
 		$inputs = $this->generateInputs($columns);
 		$entry = new $model();
 
@@ -66,7 +66,7 @@ class ScaffoldController extends Controller {
 		$model = $this->resolveModel($handle);
 
 		$entry = $model->find($id);
-		$columns = $this->getColumns($model);
+		$columns = $this->getFields($model);
 		$inputs = $this->generateInputs($columns);
 
 		if (is_null($entry))
@@ -131,7 +131,33 @@ class ScaffoldController extends Controller {
 
 	protected function getColumns($model)
 	{
-		return DB::getDoctrineSchemaManager()->listTableDetails($model->getTable())->getColumns();
+		return $this->getAttributesFromMember($model, 'columns');
+	}
+
+	protected function getFields($model)
+	{
+		return $this->getAttributesFromMember($model, 'fields');
+	}
+
+	protected function getAttributesFromMember($model, $member)
+	{
+		$columns = DB::getDoctrineSchemaManager()->listTableDetails($model->getTable())->getColumns();
+
+		if(isset($model->$member))
+		{
+			foreach($model->$member AS $item)
+			{
+				if(isset($columns[$item]))
+				{
+					$ret[$item] = $columns[$item];
+				}
+			}
+		}
+		else
+		{
+			$ret = $columns;
+		}
+		return $ret;
 	}
 
 	protected function generateInputs($columns)

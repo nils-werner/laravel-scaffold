@@ -43,8 +43,15 @@ Most of the code here is just a package wrapper so the important components don'
  - `controllers/ScaffoldController.php`
  - `views/*.blade.php`
 
-It's in `ScaffoldController` where most of the magic will happen:
+It's in `ScaffoldController` where most of the magic happens:
 
  1. Deduct the model name from the URL and see if it exists
  2. Fetch the schema of the table associated with the model
  3. Process and display the data and the schema in a table or a form
+
+## Configuration
+
+Each `Model` can configure an array of columns and fields it wants to show in the scaffolding view:
+
+    public $columns = ['realname'];
+    public $fields = ['realname', 'email'];
