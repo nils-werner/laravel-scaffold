@@ -53,5 +53,22 @@ It's in `ScaffoldController` where most of the magic happens:
 
 Each `Model` can configure an array of columns and fields it wants to show in the scaffolding view:
 
-    public $columns = ['realname'];
-    public $fields = ['realname', 'email'];
+```php
+public $columns = ['realname'];
+public $fields = ['realname', 'email'];
+```
+
+Additionally, you can use Eloquent ORM getters and setters to manipulate the input received from the form, i.e. `Hash::make()` a password when saving and only display "****" when editing:
+
+```php
+public function setPasswordAttribute($value)
+{
+    if($value != "****")
+    $this->attributes['password'] = Hash::make($value);
+}
+
+public function getPasswordAttribute($value)
+{
+    return "****";
+}
+```
