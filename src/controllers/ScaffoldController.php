@@ -58,13 +58,13 @@ class ScaffoldController extends Controller {
 			$entry->save();
 
 			return Redirect::route('scaffold.index', [$handle])
-				->with('flash', 'Entry saved.');
+				->with('message', 'Entry saved.');
 		}
 
 		return Redirect::route('scaffold.create', [$handle])
 			->withInput()
 			->withErrors($validation)
-			->with('flash', 'There were validation errors.');
+			->with('message', 'There were validation errors.');
 	}
 
 	public function getEdit($handle, $id)							# EDIT
@@ -87,7 +87,7 @@ class ScaffoldController extends Controller {
 	{
 		$model = $this->resolveModel($handle);
 
-		$input = array_except(Input::all(), '_method');
+		$input = array_except(Input::all(), array('_method','_token'));
 		$validation = Validator::make($input, isset($model->rules) ? $model->rules : []);
 
 		if ($validation->passes())
@@ -100,13 +100,13 @@ class ScaffoldController extends Controller {
 			$entry->Save();
 
 			return Redirect::route('scaffold.index', [$handle])
-				->with('flash', 'Entry updated.');
+				->with('message', 'Entry updated.');
 		}
 
 		return Redirect::route('scaffold.edit', [$handle, $id])
 			->withInput()
 			->withErrors($validation)
-			->with('flash', 'There were validation errors.');
+			->with('message', 'There were validation errors.');
 	}
 
 	public function postDelete($handle, $id)							# DELETE
@@ -116,7 +116,7 @@ class ScaffoldController extends Controller {
 		$model->find($id)->delete();
 
 		return Redirect::route('scaffold.index', [$handle])
-			->with('flash', 'Entry deleted.');
+			->with('message', 'Entry deleted.');
 	}
 
 
