@@ -129,7 +129,7 @@ class ScaffoldController extends Controller {
 
 	protected function resolveModel($handle)
 	{
-		$model = ucfirst($handle);
+		$model = $this->spinalCaseToCamelCase($handle);
 		if(is_subclass_of($model, 'Eloquent'))
 		{
 			return App::make($model);
@@ -183,6 +183,11 @@ class ScaffoldController extends Controller {
 			}
 		}
 		return $inputs;
+	}
+
+	protected function spinalCaseToCamelCase($input)
+	{
+		return str_replace(' ', '', ucwords(str_replace('-', ' ', $input)));
 	}
 
 }
