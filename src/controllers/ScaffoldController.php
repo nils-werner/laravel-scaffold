@@ -1,6 +1,7 @@
 <?php namespace NilsWerner\Scaffold;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Form;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Input;
@@ -131,7 +132,7 @@ class ScaffoldController extends Controller {
 		$model = ucfirst($handle);
 		if(is_subclass_of($model, 'Eloquent'))
 		{
-			return new $model();
+			return App::make($model);
 		}
 		else
 		{
