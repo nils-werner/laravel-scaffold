@@ -3,5 +3,6 @@
 class ScaffoldFieldString implements ScaffoldField {
 	public function render($handle)
 	{
+		return $handle;
 	}
 }

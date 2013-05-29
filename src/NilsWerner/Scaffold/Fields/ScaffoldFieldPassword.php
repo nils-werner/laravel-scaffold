@@ -3,5 +3,6 @@
 class ScaffoldFieldPassword implements ScaffoldField {
 	public function render($handle)
 	{
+		return $handle;
 	}
 }

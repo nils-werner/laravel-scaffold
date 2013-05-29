@@ -3,5 +3,6 @@
 class ScaffoldFieldFile implements ScaffoldField {
 	public function render($handle)
 	{
+		return $handle;
 	}
 }
