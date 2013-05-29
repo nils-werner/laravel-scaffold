@@ -1,6 +1,6 @@
 <?php namespace NilsWerner\Scaffold\Fields;
 
-class ScaffoldFieldString implements ScaffoldField {
+class Upload implements Field {
 	public function render($handle)
 	{
 		return $handle;

@@ -1,5 +1,5 @@
 <?php namespace NilsWerner\Scaffold\Fields;
 
-interface ScaffoldField {
+interface Field {
 	public function render($handle);
 }

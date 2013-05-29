@@ -1,6 +1,6 @@
 <?php namespace NilsWerner\Scaffold\Fields;
 
-class ScaffoldFieldPassword implements ScaffoldField {
+class Password implements Field {
 	public function render($handle)
 	{
 		return $handle;

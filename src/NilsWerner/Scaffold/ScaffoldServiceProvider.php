@@ -2,9 +2,6 @@
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
-use NilsWerner\Scaffold\Fields\ScaffoldFieldFile;
-use NilsWerner\Scaffold\Fields\ScaffoldFieldString;
-use NilsWerner\Scaffold\Fields\ScaffoldFieldPassword;
 
 class ScaffoldServiceProvider extends ServiceProvider {
 
@@ -34,19 +31,19 @@ class ScaffoldServiceProvider extends ServiceProvider {
 	{
 		include __DIR__.'/../../routes.php';
 
-		App::bind('scaffoldfieldstring', function($app)
+		App::bind('Scaffold\Fields\String', function($app)
 		{
-			return new ScaffoldFieldString;
+			return new Fields\String;
 		});
 
-		App::bind('scaffoldfieldfile', function($app)
+		App::bind('Scaffold\Fields\Upload', function($app)
 		{
-			return new ScaffoldFieldFile;
+			return new Fields\Upload;
 		});
 
-		App::bind('scaffoldfieldpassword', function($app)
+		App::bind('Scaffold\Fields\Password', function($app)
 		{
-			return new ScaffoldFieldPassword;
+			return new Fields\Password;
 		});
 	}
 

@@ -193,7 +193,7 @@ class ScaffoldController extends Controller {
 			if(!in_array($column[0]->getName(), ['id', 'created_at', 'updated_at']))
 			{
 				//if(is_a($column->getType(), "Doctrine\DBAL\Types\IntegerType"))
-				$inputs[] = App::make('scaffoldfield' . $column[1])->render($column[0]->getName());
+				$inputs[] = App::make('Scaffold\\Fields\\' . ucfirst($column[1]))->render($column[0]->getName());
 			}
 		}
 		return $inputs;
