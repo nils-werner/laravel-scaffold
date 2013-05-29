@@ -156,17 +156,31 @@ class ScaffoldController extends Controller {
 
 		if(isset($model->$member))
 		{
-			foreach($model->$member AS $item)
+			foreach($model->$member AS $key => $val)
 			{
-				if(isset($columns[$item]))
+				if(is_int($key))
 				{
-					$ret[$item] = $columns[$item];
+					$handle = $val;
+					$type = "string";
+				}
+				else
+				{
+					$handle = $key;
+					$type = $val;
+				}
+				if(isset($columns[$handle]))
+				{
+					$ret[$handle] = [ $columns[$handle], $type ];
 				}
 			}
 		}
 		else
 		{
-			$ret = $columns;
+			foreach($columns AS $item)
+			{
+				$handle = $item->getName();
+				$ret[$handle] = [ $columns[$handle], "string" ];
+			}
 		}
 		return $ret;
 	}
@@ -176,10 +190,10 @@ class ScaffoldController extends Controller {
 		$inputs = [];
 		foreach($columns AS $column)
 		{
-			if(!in_array($column->getName(), ['id', 'created_at', 'updated_at']))
+			if(!in_array($column[0]->getName(), ['id', 'created_at', 'updated_at']))
 			{
 				//if(is_a($column->getType(), "Doctrine\DBAL\Types\IntegerType"))
-				$inputs[] = $column->getName();
+				$inputs[] = App::make('scaffoldfield' . $column[1])->render($column[0]->getName());
 			}
 		}
 		return $inputs;

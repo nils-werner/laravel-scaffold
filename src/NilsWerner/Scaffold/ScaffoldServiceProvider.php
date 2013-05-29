@@ -1,6 +1,10 @@
 <?php namespace NilsWerner\Scaffold;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
+use NilsWerner\Scaffold\Fields\ScaffoldFieldFile;
+use NilsWerner\Scaffold\Fields\ScaffoldFieldString;
+use NilsWerner\Scaffold\Fields\ScaffoldFieldPassword;
 
 class ScaffoldServiceProvider extends ServiceProvider {
 
@@ -29,6 +33,21 @@ class ScaffoldServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		include __DIR__.'/../../routes.php';
+
+		App::bind('scaffoldfieldstring', function($app)
+		{
+			return new ScaffoldFieldString;
+		});
+
+		App::bind('scaffoldfieldfile', function($app)
+		{
+			return new ScaffoldFieldFile;
+		});
+
+		App::bind('scaffoldfieldpassword', function($app)
+		{
+			return new ScaffoldFieldPassword;
+		});
 	}
 
 	/**
