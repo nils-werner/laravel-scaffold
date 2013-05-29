@@ -58,6 +58,16 @@ public $columns = ['realname'];
 public $fields = ['realname', 'email'];
 ```
 
+You can also manipulate the type of input field and logic to be used for each field:
+
+```php
+public $fields = ['realname', 'email', 'avatar' => 'file'];
+```
+
+This will aks `NilsWerner\Scaffold\Fields\Upload` to render the input view, as opposed to the default `NilsWerner\Scaffold\Fields\String` etc.
+
+These fields can be amended and overloaded if necessary. Documentation forthcoming.
+
 Additionally, you can use Eloquent ORM getters and setters to manipulate the input received from the form, i.e. `Hash::make()` a password when saving and only display "****" when editing:
 
 ```php
