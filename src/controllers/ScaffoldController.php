@@ -154,6 +154,8 @@ class ScaffoldController extends Controller {
 	{
 		$columns = DB::getDoctrineSchemaManager()->listTableDetails($model->getTable())->getColumns();
 
+		$ret = array();
+
 		if(isset($model->$member))
 		{
 			foreach($model->$member AS $key => $val)
