@@ -1,8 +1,10 @@
 <?php namespace NilsWerner\Scaffold\Fields;
 
-class String implements Field {
-	public function render($handle)
+class String extends Field {
+
+	public function render()
 	{
-		return $handle;
+		return $this->handle;
 	}
+
 }

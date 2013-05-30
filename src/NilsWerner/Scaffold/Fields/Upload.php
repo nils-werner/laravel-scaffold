@@ -1,8 +1,10 @@
 <?php namespace NilsWerner\Scaffold\Fields;
 
-class Upload implements Field {
-	public function render($handle)
+class Upload extends Field {
+
+	public function render()
 	{
-		return $handle;
+		return $this->handle;
 	}
+
 }

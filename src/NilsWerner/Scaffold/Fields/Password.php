@@ -1,8 +1,10 @@
 <?php namespace NilsWerner\Scaffold\Fields;
 
-class Password implements Field {
-	public function render($handle)
+class Password extends Field {
+
+	public function render()
 	{
-		return $handle;
+		return $this->handle;
 	}
+
 }

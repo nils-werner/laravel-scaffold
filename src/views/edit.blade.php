@@ -8,8 +8,8 @@
 	<ul>
 		@foreach ($inputs as $input)
 			<li>
-				{{ Form::label($input, ucfirst($input)) }}
-				{{ Form::text($input) }}
+				{{ Form::label($input->handle(), ucfirst($input->handle())) }}
+				{{ Form::text($input->handle()) }}
 			</li>
 		@endforeach
 

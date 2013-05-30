@@ -31,19 +31,19 @@ class ScaffoldServiceProvider extends ServiceProvider {
 	{
 		include __DIR__.'/../../routes.php';
 
-		App::bind('Scaffold\Fields\String', function($app)
+		App::bind('Scaffold\Fields\String', function($app, $handle)
 		{
-			return new Fields\String;
+			return new Fields\String($app, $handle);
 		});
 
-		App::bind('Scaffold\Fields\Upload', function($app)
+		App::bind('Scaffold\Fields\Upload', function($app, $handle)
 		{
-			return new Fields\Upload;
+			return new Fields\Upload($app, $handle);
 		});
 
-		App::bind('Scaffold\Fields\Password', function($app)
+		App::bind('Scaffold\Fields\Password', function($app, $handle)
 		{
-			return new Fields\Password;
+			return new Fields\Password($app, $handle);
 		});
 	}
 
