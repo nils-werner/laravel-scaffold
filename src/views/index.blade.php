@@ -10,7 +10,7 @@
 	<table class="table table-striped table-bordered">
 		<thead>
 			@foreach ($inputs as $input)
-				<th>{{ ucfirst($input->handle()) }}</th>
+				<th>{{ $input->label() }}</th>
 			@endforeach
 			<td colspan="2" />
 		</thead>

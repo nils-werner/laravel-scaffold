@@ -1,10 +1,12 @@
 <?php namespace NilsWerner\Scaffold\Fields;
 
+use Illuminate\Support\Facades\Form;
+
 class String extends Field {
 
-	public function render()
+	public function input()
 	{
-		return $this->handle;
+		return Form::text($this->handle());
 	}
 
 }

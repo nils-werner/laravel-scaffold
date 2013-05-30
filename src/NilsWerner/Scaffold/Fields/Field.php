@@ -1,5 +1,7 @@
 <?php namespace NilsWerner\Scaffold\Fields;
 
+use Illuminate\Support\Facades\Form;
+
 class Field {
 
 	protected $handle = '';
@@ -14,9 +16,19 @@ class Field {
 		return $this->handle;
 	}
 
-	public function render()
+	public function column()
 	{
-		return $this->handle;
+		return ucfirst($this->handle);
+	}
+
+	public function label()
+	{
+		return Form::label($this->handle(), ucfirst($this->handle()));
+	}
+
+	public function input()
+	{
+		return $this->handle . " not implemented";
 	}
 
 }
