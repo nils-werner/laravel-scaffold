@@ -45,6 +45,11 @@ class ScaffoldServiceProvider extends ServiceProvider {
 		{
 			return new Fields\Password($app, $handle);
 		});
+
+		App::bind('Scaffold\Fields\Checkbox', function($app, $handle)
+		{
+			return new Fields\Checkbox($app, $handle);
+		});
 	}
 
 	/**
