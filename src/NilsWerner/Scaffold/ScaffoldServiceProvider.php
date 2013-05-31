@@ -31,24 +31,29 @@ class ScaffoldServiceProvider extends ServiceProvider {
 	{
 		include __DIR__.'/../../routes.php';
 
-		App::bind('Scaffold\Fields\String', function($app, $handle)
+		App::bind('Scaffold\Fields\String', function($app, $params)
 		{
-			return new Fields\String($app, $handle);
+			return new Fields\String($app, $params[0], $params[1], $params[2]);
 		});
 
-		App::bind('Scaffold\Fields\Upload', function($app, $handle)
+		App::bind('Scaffold\Fields\Upload', function($app, $params)
 		{
-			return new Fields\Upload($app, $handle);
+			return new Fields\Upload($app, $params[0], $params[1], $params[2]);
 		});
 
-		App::bind('Scaffold\Fields\Password', function($app, $handle)
+		App::bind('Scaffold\Fields\Password', function($app, $params)
 		{
-			return new Fields\Password($app, $handle);
+			return new Fields\Password($app, $params[0], $params[1], $params[2]);
 		});
 
-		App::bind('Scaffold\Fields\Checkbox', function($app, $handle)
+		App::bind('Scaffold\Fields\Checkbox', function($app, $params)
 		{
-			return new Fields\Checkbox($app, $handle);
+			return new Fields\Checkbox($app, $params[0], $params[1], $params[2]);
+		});
+
+		App::bind('Scaffold\Fields\Relation', function($app, $params)
+		{
+			return new Fields\Relation($app, $params[0], $params[1], $params[2]);
 		});
 	}
 

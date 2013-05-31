@@ -4,21 +4,23 @@ use Illuminate\Support\Facades\Form;
 
 class Field {
 
-	protected $handle = '';
+	protected $column;
+	protected $model;
 
-	public function __construct($app, $handle)
+	public function __construct($app, $model, $columns, $handle)
 	{
-		$this->handle = $handle;
+		$this->model = $model;
+		$this->column = $columns[$handle];
 	}
 
 	public function handle()
 	{
-		return $this->handle;
+		return $this->column->getName();
 	}
 
 	public function column()
 	{
-		return ucfirst($this->handle);
+		return ucfirst($this->handle());
 	}
 
 	public function label()
@@ -28,7 +30,12 @@ class Field {
 
 	public function input()
 	{
-		return $this->handle . " not implemented";
+		return $this->handle() . " not implemented";
+	}
+
+	public function table($entry)
+	{
+		return $entry->{$this->handle()};
 	}
 
 }
