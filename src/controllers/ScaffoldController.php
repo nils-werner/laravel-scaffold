@@ -170,7 +170,7 @@ class ScaffoldController extends Controller {
 				{
 					if(!in_array($columns[$handle]->getName(), ['id', 'created_at', 'updated_at']))
 					{
-						$ret[] = App::make('Scaffold\\Fields\\' . ucfirst($type), $columns[$handle]);
+						$ret[] = App::make('Scaffold\\Fields\\' . ucfirst($type), array($model, $columns[$handle]));
 					}
 				}
 			}
@@ -184,7 +184,7 @@ class ScaffoldController extends Controller {
 
 				if(!in_array($columns[$handle]->getName(), ['id', 'created_at', 'updated_at']))
 				{
-					$ret[] = App::make('Scaffold\\Fields\\' . ucfirst($type), $columns[$handle]);
+					$ret[] = App::make('Scaffold\\Fields\\' . ucfirst($type), array($model, $columns[$handle]));
 				}
 			}
 		}

@@ -4,10 +4,12 @@ use Illuminate\Support\Facades\Form;
 
 class Field {
 
-	protected $column = '';
+	protected $column;
+	protected $model;
 
-	public function __construct($app, $column)
+	public function __construct($app, $model, $column)
 	{
+		$this->model = $model;
 		$this->column = $column;
 	}
 
