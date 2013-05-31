@@ -31,12 +31,17 @@ class Relation extends Field {
 		{
 			$row = $entry->{$this->handle()}->first()->getAttributes();
 			$keys = array_keys($row);
-			return $row[$keys[1]];
+			return "<a href=\"" . $this->linkToModel() . "/" . $row[$keys[0]] . "/edit\">" . $row[$keys[1]] . "</a>";
 		}
 		else if(is_a($this->relation, 'Illuminate\Database\Eloquent\Relations\HasMany'))
 		{
-			return $entry->{$this->handle()}->count();
+			return "<a href=\"" . $this->linkToModel() . "\">" . $entry->{$this->handle()}->count() . "</a>";
 		}
+	}
+
+	protected function linkToModel()
+	{
+		return strtolower(get_class($this->relation->getModel()));
 	}
 
 }
