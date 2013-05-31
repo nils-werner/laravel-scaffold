@@ -35,19 +35,32 @@ Next step is to tell laravel to load the serviceprovider. In `app/config/app.php
 ```
 to the `providers` array.
 
+## Usage
+
+After installing, pick any of your existing `Eloquent` models and view its scaffolding view by navigating to
+
+    http://host/scaffold/<handle>
+
+where `<handle>` is the lowercase name of your model. See section `Configuration` if any of your table fields
+contain special data like a file upload or relations.
+
 ## Concept
 
-Most of the code here is just a package wrapper so the important components don't have to be in `/app`:
+This bundle primarily exists of the following parts:
 
  - `routes.php`
  - `controllers/ScaffoldController.php`
  - `views/*.blade.php`
+ - `NilsWerner/Scaffold/Fields/*`
 
 It's in `ScaffoldController` where most of the magic happens:
 
  1. Deduct the model name from the URL and see if it exists
  2. Fetch the schema of the table associated with the model
  3. Process and display the data and the schema in a table or a form
+
+All files in `NilsWerner/Scaffold/Fields/` contain the specific codebase for each fieldtype to be displayed
+and processed.
 
 ## Configuration
 
