@@ -45,8 +45,7 @@ class ScaffoldController extends Controller {
 	public function postIndex($handle)								# STORE
 	{
 		$model = $this->resolveModel($handle);
-
-		$input = Input::all();
+		$input = array_except(Input::all(), array('_method','_token'));
 		$validation = Validator::make($input, isset($model->rules) ? $model->rules : []);
 
 		if ($validation->passes())
