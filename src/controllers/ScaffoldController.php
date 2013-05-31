@@ -26,8 +26,7 @@ class ScaffoldController extends Controller {
 	{
 		$model = $this->resolveModel($handle);
 		$entries = $model->paginate(15);
-		$columns = $this->getColumns($model);
-		$inputs = $this->generateInputs($columns);
+		$inputs = $this->getColumns($model);
 
 		return View::make('scaffold::index', compact('entries', 'handle', 'inputs'));
 	}
@@ -35,8 +34,7 @@ class ScaffoldController extends Controller {
 	public function getCreate($handle)								# CREATE
 	{	
 		$model = $this->resolveModel($handle);
-		$columns = $this->getFields($model);
-		$inputs = $this->generateInputs($columns);
+		$inputs = $this->getFields($model);
 		$entry = new $model();
 
 		return View::make('scaffold::create', compact('entry', 'handle', 'inputs'));
@@ -72,8 +70,7 @@ class ScaffoldController extends Controller {
 		$model = $this->resolveModel($handle);
 
 		$entry = $model->find($id);
-		$columns = $this->getFields($model);
-		$inputs = $this->generateInputs($columns);
+		$inputs = $this->getFields($model);
 
 		if (is_null($entry))
 		{
@@ -171,7 +168,10 @@ class ScaffoldController extends Controller {
 				}
 				if(isset($columns[$handle]))
 				{
-					$ret[$handle] = [ $columns[$handle], $type ];
+					if(!in_array($columns[$handle]->getName(), ['id', 'created_at', 'updated_at']))
+					{
+						$ret[] = App::make('Scaffold\\Fields\\' . ucfirst($type), $columns[$handle]);
+					}
 				}
 			}
 		}
@@ -180,24 +180,15 @@ class ScaffoldController extends Controller {
 			foreach($columns AS $item)
 			{
 				$handle = $item->getName();
-				$ret[$handle] = [ $columns[$handle], "string" ];
+				$type = "string";
+
+				if(!in_array($columns[$handle]->getName(), ['id', 'created_at', 'updated_at']))
+				{
+					$ret[] = App::make('Scaffold\\Fields\\' . ucfirst($type), $columns[$handle]);
+				}
 			}
 		}
 		return $ret;
-	}
-
-	protected function generateInputs($columns)
-	{
-		$inputs = [];
-		foreach($columns AS $column)
-		{
-			if(!in_array($column[0]->getName(), ['id', 'created_at', 'updated_at']))
-			{
-				//if(is_a($column->getType(), "Doctrine\DBAL\Types\IntegerType"))
-				$inputs[] = App::make('Scaffold\\Fields\\' . ucfirst($column[1]), $column[0]->getName());
-			}
-		}
-		return $inputs;
 	}
 
 	protected function spinalCaseToCamelCase($input)
