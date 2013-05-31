@@ -25,4 +25,18 @@ class Relation extends Field {
 		return $this->handle;
 	}
 
+	public function table($entry)
+	{
+		if(is_a($this->relation, 'Illuminate\Database\Eloquent\Relations\BelongsTo'))
+		{
+			$row = $entry->{$this->handle()}->first()->getAttributes();
+			$keys = array_keys($row);
+			return $row[$keys[1]];
+		}
+		else if(is_a($this->relation, 'Illuminate\Database\Eloquent\Relations\HasMany'))
+		{
+			return $entry->{$this->handle()}->count();
+		}
+	}
+
 }

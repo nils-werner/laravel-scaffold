@@ -33,4 +33,9 @@ class Field {
 		return $this->handle() . " not implemented";
 	}
 
+	public function table($entry)
+	{
+		return $entry->{$this->handle()};
+	}
+
 }
