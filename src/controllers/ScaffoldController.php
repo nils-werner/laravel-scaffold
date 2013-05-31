@@ -166,13 +166,7 @@ class ScaffoldController extends Controller {
 					$handle = $key;
 					$type = $val;
 				}
-				if(isset($columns[$handle]))
-				{
-					if(!in_array($columns[$handle]->getName(), ['id', 'created_at', 'updated_at']))
-					{
-						$ret[] = App::make('Scaffold\\Fields\\' . ucfirst($type), array($model, $columns[$handle]));
-					}
-				}
+				$ret[] = App::make('Scaffold\\Fields\\' . ucfirst($type), array($model, $columns, $handle));
 			}
 		}
 		else
@@ -182,9 +176,9 @@ class ScaffoldController extends Controller {
 				$handle = $item->getName();
 				$type = "string";
 
-				if(!in_array($columns[$handle]->getName(), ['id', 'created_at', 'updated_at']))
+				if(!in_array($handle, ['id', 'created_at', 'updated_at']))
 				{
-					$ret[] = App::make('Scaffold\\Fields\\' . ucfirst($type), array($model, $columns[$handle]));
+					$ret[] = App::make('Scaffold\\Fields\\' . ucfirst($type), array($model, $columns, $handle));
 				}
 			}
 		}

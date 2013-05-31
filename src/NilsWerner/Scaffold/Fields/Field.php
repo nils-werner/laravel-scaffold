@@ -7,10 +7,10 @@ class Field {
 	protected $column;
 	protected $model;
 
-	public function __construct($app, $model, $column)
+	public function __construct($app, $model, $columns, $handle)
 	{
 		$this->model = $model;
-		$this->column = $column;
+		$this->column = $columns[$handle];
 	}
 
 	public function handle()
