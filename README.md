@@ -66,6 +66,16 @@ public $fields = ['realname', 'email', 'avatar' => 'upload', 'active' => 'checkb
 
 This will ask `NilsWerner\Scaffold\Fields\Upload` and `NilsWerner\Scaffold\Fields\Checkbox` to render the input view, as opposed to the default `NilsWerner\Scaffold\Fields\String` etc.
 
+### Relations
+
+Relations can be showed by simply using the `relation` type in your Model fields:
+
+```php
+public $fields = ['user' => 'relation', 'comments' => 'relation', 'title', 'body'];
+```
+
+The type of relation will automatically be figured out. The name of the field must represent the relation method used in the Model.
+
 ### Adding new fields
 
 In order to implement new field types, you need to create a Class that inherits from `NilsWerner\Scaffold\Fields\Field`:
@@ -88,19 +98,21 @@ App::bind('Scaffold\Fields\Somefield', function($app, $handle)
 });
 ```
 
+## Data Manipulation
+
 You can then use the type `somefield` in the `$fields` array in your model.
 
-Additionally, you can use Eloquent ORM getters and setters to manipulate the input received from the form, i.e. `Hash::make()` a password when saving and only display "****" when editing:
+Additionally, you can use Eloquent ORM getters and setters to manipulate the input received from the form, i.e. `Hash::make()` a password when saving and only display a blank field when editing:
 
 ```php
 public function setPasswordAttribute($value)
 {
-    if($value != "****")
+    if($value != "")
     $this->attributes['password'] = Hash::make($value);
 }
 
 public function getPasswordAttribute($value)
 {
-    return "****";
+    return "";
 }
 ```
