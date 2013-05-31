@@ -50,6 +50,11 @@ class ScaffoldServiceProvider extends ServiceProvider {
 		{
 			return new Fields\Checkbox($app, $params[0], $params[1]);
 		});
+
+		App::bind('Scaffold\Fields\Relation', function($app, $params)
+		{
+			return new Fields\Relation($app, $params[0], $params[1]);
+		});
 	}
 
 	/**
