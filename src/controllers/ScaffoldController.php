@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Form;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -26,27 +24,24 @@ class ScaffoldController extends Controller {
 	{
 		$model = $this->resolveModel($handle);
 		$entries = $model->paginate(15);
-		$columns = $this->getColumns($model);
-		$inputs = $this->generateInputs($columns);
+		$inputs = $this->getColumns($model);
 
-		return View::make('scaffold::index', compact('entries', 'handle', 'inputs'));
+		return App::make('view')->make('scaffold::index', compact('entries', 'handle', 'inputs'));
 	}
 
 	public function getCreate($handle)								# CREATE
 	{	
 		$model = $this->resolveModel($handle);
-		$columns = $this->getFields($model);
-		$inputs = $this->generateInputs($columns);
+		$inputs = $this->getFields($model);
 		$entry = new $model();
 
-		return View::make('scaffold::create', compact('entry', 'handle', 'inputs'));
+		return App::make('view')->make('scaffold::create', compact('entry', 'handle', 'inputs'));
 	}
 
 	public function postIndex($handle)								# STORE
 	{
 		$model = $this->resolveModel($handle);
-
-		$input = Input::all();
+		$input = array_except(App::make('input')->all(), array('_method','_token'));
 		$validation = Validator::make($input, isset($model->rules) ? $model->rules : []);
 
 		if ($validation->passes())
@@ -73,22 +68,21 @@ class ScaffoldController extends Controller {
 		$model = $this->resolveModel($handle);
 
 		$entry = $model->find($id);
-		$columns = $this->getFields($model);
-		$inputs = $this->generateInputs($columns);
+		$inputs = $this->getFields($model);
 
 		if (is_null($entry))
 		{
 			return Redirect::route('scaffold.index', [$handle]);
 		}
 
-		return View::make('scaffold::edit', compact('entry', 'inputs', 'handle'));
+		return App::make('view')->make('scaffold::edit', compact('entry', 'inputs', 'handle'));
 	}
 
 	public function postEdit($handle, $id)							# UPDATE
 	{
 		$model = $this->resolveModel($handle);
 
-		$input = array_except(Input::all(), array('_method','_token'));
+		$input = array_except(App::make('input')->all(), array('_method','_token'));
 		$validation = Validator::make($input, isset($model->rules) ? $model->rules : []);
 
 		if ($validation->passes())
@@ -154,35 +148,39 @@ class ScaffoldController extends Controller {
 	{
 		$columns = DB::getDoctrineSchemaManager()->listTableDetails($model->getTable())->getColumns();
 
+		$ret = array();
+
 		if(isset($model->$member))
 		{
-			foreach($model->$member AS $item)
+			foreach($model->$member AS $key => $val)
 			{
-				if(isset($columns[$item]))
+				if(is_int($key))
 				{
-					$ret[$item] = $columns[$item];
+					$handle = $val;
+					$type = "string";
 				}
+				else
+				{
+					$handle = $key;
+					$type = $val;
+				}
+				$ret[] = App::make('Scaffold\\Fields\\' . ucfirst($type), array($model, $columns, $handle));
 			}
 		}
 		else
 		{
-			$ret = $columns;
-		}
-		return $ret;
-	}
-
-	protected function generateInputs($columns)
-	{
-		$inputs = [];
-		foreach($columns AS $column)
-		{
-			if(!in_array($column->getName(), ['id', 'created_at', 'updated_at']))
+			foreach($columns AS $item)
 			{
-				//if(is_a($column->getType(), "Doctrine\DBAL\Types\IntegerType"))
-				$inputs[] = $column->getName();
+				$handle = $item->getName();
+				$type = "string";
+
+				if(!in_array($handle, ['id', 'created_at', 'updated_at']))
+				{
+					$ret[] = App::make('Scaffold\\Fields\\' . ucfirst($type), array($model, $columns, $handle));
+				}
 			}
 		}
-		return $inputs;
+		return $ret;
 	}
 
 	protected function spinalCaseToCamelCase($input)

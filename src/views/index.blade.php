@@ -10,7 +10,7 @@
 	<table class="table table-striped table-bordered">
 		<thead>
 			@foreach ($inputs as $input)
-				<th>{{ ucfirst($input) }}</th>
+				<th>{{ $input->label() }}</th>
 			@endforeach
 			<td colspan="2" />
 		</thead>
@@ -19,7 +19,7 @@
 			@foreach ($entries as $entry)
 				<tr>
 					@foreach ($inputs as $input)
-						<td>{{ $entry->$input }}</td>
+						<td>{{ $input->table($entry) }}</td>
 					@endforeach
 					<td>{{ link_to_route('scaffold.edit', 'Edit', [$handle, $entry->id], ['class' => 'btn btn-info']) }}</td>
 					<td>
