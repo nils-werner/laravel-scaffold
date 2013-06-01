@@ -111,9 +111,9 @@ App::bind('Scaffold\Fields\Somefield', function($app, $handle)
 });
 ```
 
-## Data Manipulation
-
 You can then use the type `somefield` in the `$fields` array in your model.
+
+## Data Manipulation
 
 Additionally, you can use Eloquent ORM getters and setters to manipulate the input received from the form, i.e. `Hash::make()` a password when saving and only display a blank field when editing:
 
