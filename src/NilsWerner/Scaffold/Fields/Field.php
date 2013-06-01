@@ -1,6 +1,6 @@
 <?php namespace NilsWerner\Scaffold\Fields;
 
-use Illuminate\Support\Facades\Form;
+use Illuminate\Support\Facades\App;
 
 class Field {
 
@@ -25,7 +25,7 @@ class Field {
 
 	public function label()
 	{
-		return Form::label($this->handle(), ucfirst($this->handle()));
+		return App::make('form')->label($this->handle(), ucfirst($this->handle()));
 	}
 
 	public function input()

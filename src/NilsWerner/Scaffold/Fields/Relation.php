@@ -1,6 +1,6 @@
 <?php namespace NilsWerner\Scaffold\Fields;
 
-use Illuminate\Support\Facades\Form;
+use Illuminate\Support\Facades\App;
 
 class Relation extends Field {
 
