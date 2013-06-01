@@ -28,7 +28,7 @@ class ScaffoldController extends Controller {
 		$entries = $model->paginate(15);
 		$inputs = $this->getColumns($model);
 
-		return View::make('scaffold::index', compact('entries', 'handle', 'inputs'));
+		return App::make('view')->make('scaffold::index', compact('entries', 'handle', 'inputs'));
 	}
 
 	public function getCreate($handle)								# CREATE
@@ -37,7 +37,7 @@ class ScaffoldController extends Controller {
 		$inputs = $this->getFields($model);
 		$entry = new $model();
 
-		return View::make('scaffold::create', compact('entry', 'handle', 'inputs'));
+		return App::make('view')->make('scaffold::create', compact('entry', 'handle', 'inputs'));
 	}
 
 	public function postIndex($handle)								# STORE
@@ -77,7 +77,7 @@ class ScaffoldController extends Controller {
 			return Redirect::route('scaffold.index', [$handle]);
 		}
 
-		return View::make('scaffold::edit', compact('entry', 'inputs', 'handle'));
+		return App::make('view')->make('scaffold::edit', compact('entry', 'inputs', 'handle'));
 	}
 
 	public function postEdit($handle, $id)							# UPDATE
