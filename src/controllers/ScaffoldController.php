@@ -22,17 +22,17 @@ class ScaffoldController extends Controller {
 
 	public function getIndex($handle)								# INDEX
 	{
-		$model = $this->resolveModel($handle);
+		$model = Managers\ModelManager::resolve($handle);
 		$entries = $model->paginate(15);
-		$inputs = $this->getColumns($model);
+		$inputs = Managers\FieldManager::getColumns($model);
 
 		return App::make('view')->make('scaffold::index', compact('entries', 'handle', 'inputs'));
 	}
 
 	public function getCreate($handle)								# CREATE
 	{	
-		$model = $this->resolveModel($handle);
-		$inputs = $this->getFields($model);
+		$model = Managers\ModelManager::resolve($handle);
+		$inputs = Managers\FieldManager::getFields($model);
 		$entry = new $model();
 
 		return App::make('view')->make('scaffold::create', compact('entry', 'handle', 'inputs'));
@@ -40,7 +40,7 @@ class ScaffoldController extends Controller {
 
 	public function postIndex($handle)								# STORE
 	{
-		$model = $this->resolveModel($handle);
+		$model = Managers\ModelManager::resolve($handle);
 		$input = array_except(App::make('request')->all(), array('_method','_token'));
 		$validation = Validator::make($input, isset($model->rules) ? $model->rules : []);
 
@@ -65,10 +65,10 @@ class ScaffoldController extends Controller {
 
 	public function getEdit($handle, $id)							# EDIT
 	{
-		$model = $this->resolveModel($handle);
+		$model = Managers\ModelManager::resolve($handle);
 
 		$entry = $model->find($id);
-		$inputs = $this->getFields($model);
+		$inputs = Managers\FieldManager::getFields($model);
 
 		if (is_null($entry))
 		{
@@ -80,7 +80,7 @@ class ScaffoldController extends Controller {
 
 	public function postEdit($handle, $id)							# UPDATE
 	{
-		$model = $this->resolveModel($handle);
+		$model = Managers\ModelManager::resolve($handle);
 
 		$input = array_except(App::make('request')->all(), array('_method','_token'));
 		$validation = Validator::make($input, isset($model->rules) ? $model->rules : []);
@@ -106,86 +106,12 @@ class ScaffoldController extends Controller {
 
 	public function postDelete($handle, $id)							# DELETE
 	{
-		$model = $this->resolveModel($handle);
+		$model = Managers\ModelManager::resolve($handle);
 
 		$model->find($id)->delete();
 
 		return Redirect::route('scaffold.index', [$handle])
 			->with('message', 'Entry deleted.');
-	}
-
-
-/*
-|
-| Utilities
-|
-*/
-
-	protected function resolveModel($handle)
-	{
-		$model = $this->spinalCaseToCamelCase($handle);
-		if(is_subclass_of($model, 'Eloquent'))
-		{
-			return App::make($model);
-		}
-		else
-		{
-			App::abort(404, 'Page not found');
-		}
-	}
-
-	protected function getColumns($model)
-	{
-		return $this->getAttributesFromMember($model, 'columns');
-	}
-
-	protected function getFields($model)
-	{
-		return $this->getAttributesFromMember($model, 'fields');
-	}
-
-	protected function getAttributesFromMember($model, $member)
-	{
-		$columns = DB::getDoctrineSchemaManager()->listTableDetails($model->getTable())->getColumns();
-
-		$ret = array();
-
-		if(isset($model->$member))
-		{
-			foreach($model->$member AS $key => $val)
-			{
-				if(is_int($key))
-				{
-					$handle = $val;
-					$type = "string";
-				}
-				else
-				{
-					$handle = $key;
-					$type = $val;
-				}
-				$ret[] = App::make('Scaffold\\Fields\\' . ucfirst($type), array($model, $columns, $handle));
-			}
-		}
-		else
-		{
-			foreach($columns AS $item)
-			{
-				$handle = $item->getName();
-				$type = "string";
-
-				if(!in_array($handle, ['id', 'created_at', 'updated_at']))
-				{
-					$ret[] = App::make('Scaffold\\Fields\\' . ucfirst($type), array($model, $columns, $handle));
-				}
-			}
-		}
-		return $ret;
-	}
-
-	protected function spinalCaseToCamelCase($input)
-	{
-		return str_replace(' ', '', ucwords(str_replace('-', ' ', $input)));
 	}
 
 }

@@ -31,6 +31,16 @@ class ScaffoldServiceProvider extends ServiceProvider {
 	{
 		include __DIR__.'/../../routes.php';
 
+		App::bind('Scaffold\FieldManager', function($app, $params)
+		{
+			return new FieldManager($app, $params);
+		});
+
+		App::bind('Scaffold\ModelManager', function($app, $params)
+		{
+			return new ModelManager($app, $params);
+		});
+
 		App::bind('Scaffold\Fields\String', function($app, $params)
 		{
 			return new Fields\String($app, $params[0], $params[1], $params[2]);
