@@ -38,4 +38,9 @@ class Field {
 		return $entry->{$this->handle()};
 	}
 
+	public function process($input)
+	{
+		return $input;
+	}
+
 }
