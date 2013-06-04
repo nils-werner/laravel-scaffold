@@ -41,7 +41,7 @@ class ScaffoldController extends Controller {
 	public function postIndex($handle)								# STORE
 	{
 		$model = $this->resolveModel($handle);
-		$input = array_except(App::make('input')->all(), array('_method','_token'));
+		$input = array_except(App::make('request')->all(), array('_method','_token'));
 		$validation = Validator::make($input, isset($model->rules) ? $model->rules : []);
 
 		if ($validation->passes())
@@ -82,7 +82,7 @@ class ScaffoldController extends Controller {
 	{
 		$model = $this->resolveModel($handle);
 
-		$input = array_except(App::make('input')->all(), array('_method','_token'));
+		$input = array_except(App::make('request')->all(), array('_method','_token'));
 		$validation = Validator::make($input, isset($model->rules) ? $model->rules : []);
 
 		if ($validation->passes())
